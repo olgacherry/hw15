@@ -34,6 +34,6 @@ return employeeServise.addEmployee(firstName,lastName);
     }
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeServise.getAllEmployees();
+        return (List<Employee>) employeeServise.getAllEmployees();
     }
 }

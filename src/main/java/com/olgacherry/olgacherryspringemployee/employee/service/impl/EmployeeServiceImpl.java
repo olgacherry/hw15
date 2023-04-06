@@ -4,63 +4,53 @@ import com.olgacherry.olgacherryspringemployee.employee.Employee;
 import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeServise;
 import com.olgacherry.olgacherryspringemployee.exception.EmployeeAlreadyAddedException;
 import com.olgacherry.olgacherryspringemployee.exception.EmployeeNotFoundException;
-import com.olgacherry.olgacherryspringemployee.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeServise {
-    private final List<Employee> employees;
+    private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
-        employees = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
 
     @Override
     public Employee addEmployee(String firstName, String lastName) {
-        Employee employee = findEmployee(firstName, lastName);
-        if (employee != null) {
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employee = new Employee(firstName, lastName);
-        employees.add(employee);
+        employees.put(employee.getFullName(),employee);
             return employee;
 
             }
 
-
-
-
-
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
-        Employee employee = findEmployee(firstName, lastName);
-        if (employees.contains(employee)){
-            throw new EmployeeNotFoundException();
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.remove(employee.getFullName());
 
         }
+            throw new EmployeeNotFoundException();
 
-employees.remove(employee);
-
-        return employee;
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee findEmployee = new Employee(firstName, lastName);
-        for (Employee employee:employees) {
-            if (employee.equals(findEmployee)) {
-                return employee;
+        Employee employee = new Employee(firstName, lastName);
+        if (employees.containsKey(employee.getFullName())) {
+                return employees.get(employee.getFullName());
 
             }
-        }
-        return null;
+
+        throw new EmployeeNotFoundException();
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employees;
+    public Collection<Employee> getAllEmployees() {
+        return Collections.unmodifiableCollection(employees.values());
     }
 }
