@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeServise employeeServise;
 
@@ -19,8 +17,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-return employeeServise.addEmployee(firstName,lastName);
+    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName,@RequestParam Integer salary, Integer department) {
+return employeeServise.addEmployee(firstName,lastName, salary, department);
     }
 
     @GetMapping("/remove")

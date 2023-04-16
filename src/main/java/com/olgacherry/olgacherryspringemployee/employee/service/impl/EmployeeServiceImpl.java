@@ -17,8 +17,8 @@ public class EmployeeServiceImpl implements EmployeeServise {
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee addEmployee(String firstName, String lastName, int salary, int department) {
+        Employee employee = new Employee(firstName, lastName,salary, department);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
@@ -28,10 +28,15 @@ public class EmployeeServiceImpl implements EmployeeServise {
             }
 
     @Override
+    public Employee addEmployee(String firstName, String lastName) {
+        return null;
+    }
+
+    @Override
     public Employee removeEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employees.containsKey(employee.getFullName())) {
-            return employees.remove(employee.getFullName());
+        String key =  firstName+lastName;
+        if (employees.containsKey(key)) {
+            return employees.get(key);
 
         }
             throw new EmployeeNotFoundException();
@@ -40,9 +45,9 @@ public class EmployeeServiceImpl implements EmployeeServise {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employees.containsKey(employee.getFullName())) {
-                return employees.get(employee.getFullName());
+        String key =  firstName+lastName;
+        if (employees.containsKey(key)) {
+                return employees.get(key);
 
             }
 
