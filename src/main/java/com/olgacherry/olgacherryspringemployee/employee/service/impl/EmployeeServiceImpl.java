@@ -1,7 +1,7 @@
 package com.olgacherry.olgacherryspringemployee.employee.service.impl;
 
 import com.olgacherry.olgacherryspringemployee.employee.Employee;
-import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeServise;
+import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeService;
 import com.olgacherry.olgacherryspringemployee.exception.EmployeeAlreadyAddedException;
 import com.olgacherry.olgacherryspringemployee.exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeServise {
+public class EmployeeServiceImpl implements EmployeeService {
     private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
@@ -57,5 +57,9 @@ public class EmployeeServiceImpl implements EmployeeServise {
     @Override
     public Collection<Employee> getAllEmployees() {
         return Collections.unmodifiableCollection(employees.values());
+    }
+
+    public int getSalarySum() {
+        return Collections.unmodifiableCollection(employees.values()).size();
     }
 }

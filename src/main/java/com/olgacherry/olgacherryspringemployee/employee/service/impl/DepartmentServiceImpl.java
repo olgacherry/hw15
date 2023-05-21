@@ -1,8 +1,8 @@
 package com.olgacherry.olgacherryspringemployee.employee.service.impl;
 
 import com.olgacherry.olgacherryspringemployee.employee.Employee;
-import com.olgacherry.olgacherryspringemployee.employee.service.DepartmentServise;
-import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeServise;
+import com.olgacherry.olgacherryspringemployee.employee.service.DepartmentService;
+import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -12,16 +12,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class depertmentServiceImpl implements DepartmentServise {
+public class DepartmentServiceImpl implements DepartmentService {
 
 
-    private final EmployeeServise employeeServise;
-    public depertmentServiceImpl(EmployeeServise employeeServise) {
-        this.employeeServise = employeeServise;
+    private final EmployeeService employeeService;
+    public DepartmentServiceImpl(EmployeeService employeeServise) {
+        this.employeeService = employeeServise;
     }
     @Override
     public Employee getEmployeeWhithMaxSalary(Integer departmentId) {
-        Collection<Employee>employees=employeeServise.getAllEmployees();
+        Collection<Employee>employees=employeeService.getAllEmployees();
         return employees.stream()
                 .max(Comparator.comparing(Employee::getSalary))
                 .get();
@@ -29,7 +29,7 @@ public class depertmentServiceImpl implements DepartmentServise {
 
     @Override
     public Employee getEmployeeWhithMinSalary(Integer departmentId) {
-        Collection<Employee>employees=employeeServise.getAllEmployees();
+        Collection<Employee>employees=employeeService.getAllEmployees();
         return employees.stream()
                 .min(Comparator.comparing(Employee::getSalary))
                 .get();
@@ -38,7 +38,7 @@ public class depertmentServiceImpl implements DepartmentServise {
 
     @Override
     public List<Employee> getEmployeesByDepartment(Integer departmentId) {
-        Collection<Employee>employees=employeeServise.getAllEmployees();
+        Collection<Employee>employees=employeeService.getAllEmployees();
         return employees.stream()
                 .filter(it->it.getDepartment()==departmentId)
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class depertmentServiceImpl implements DepartmentServise {
 
     @Override
     public Map<Integer, List<Employee>> getEmployeesCollectedByDepartment() {
-        Collection<Employee>employees=employeeServise.getAllEmployees();
+        Collection<Employee>employees=employeeService.getAllEmployees();
         return employees.stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment));
 

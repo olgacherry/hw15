@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-public interface DepartmentServise {
+public interface DepartmentService {
     Employee getEmployeeWhithMaxSalary( Integer departmentId);
     public Employee getEmployeeWhithMinSalary(Integer departmentId);
     public List<Employee> getEmployeesByDepartment( Integer departmentId);
