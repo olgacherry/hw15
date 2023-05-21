@@ -1,7 +1,9 @@
 package com.olgacherry.olgacherryspringemployee.controller;
 
 import com.olgacherry.olgacherryspringemployee.employee.Employee;
-import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeServise;
+import com.olgacherry.olgacherryspringemployee.employee.service.EmployeeService;
+import com.olgacherry.olgacherryspringemployee.validation.EmployeeValidator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,31 +11,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/employees")
 public class EmployeeController {
-    private final EmployeeServise employeeServise;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeServise employeeServise) {
-        this.employeeServise = employeeServise;
+    public EmployeeController(EmployeeService employeeServise) {
+        this.employeeService = employeeServise;
     }
 
     @GetMapping("/add")
-    public Employee addEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-return employeeServise.addEmployee(firstName,lastName);
+    public ResponseEntity <Employee> addEmployee(@RequestParam String firstName, @RequestParam String lastName) {
+        if(EmployeeValidator.validate(firstName,lastName)) {
+            return ResponseEntity.ok(employeeService.addEmployee(firstName, lastName));
+        }
+return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/remove")
-    public Employee removeEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-        return employeeServise.removeEmployee(firstName,lastName);
+    public ResponseEntity <Employee> removeEmployee(@RequestParam String firstName, @RequestParam String lastName){
+        if(EmployeeValidator.validate(firstName,lastName)){
+            employeeService.removeEmployee(firstName,lastName);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/find")
-    public Employee findEmployee(@RequestParam String firstName, @RequestParam String lastName) {
-        return employeeServise.findEmployee(firstName,lastName);
+    public ResponseEntity <Employee> findEmployee(@RequestParam String firstName, @RequestParam String lastName) {
+        if(EmployeeValidator.validate(firstName,lastName)){
+            return ResponseEntity.ok(employeeService.findEmployee(firstName,lastName));
+        }
+        return ResponseEntity.badRequest().build();
     }
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeServise.getAllEmployees();
+        return (List<Employee>) employeeService.getAllEmployees();
     }
 }
